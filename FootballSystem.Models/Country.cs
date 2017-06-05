@@ -20,7 +20,7 @@
 
         [Required]
         [MinLength(2)]
-        [MaxLength(20)]
+        [MaxLength(50)]
         public string Name { get; set; }
 
         public virtual ICollection<Team> Teams
