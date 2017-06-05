@@ -97,10 +97,13 @@
 
             var postgresqlDb = new FootballPostgresqlDbContext();
 
+            var sqliteDb = new FootballSQLiteDbContext();
 
 
-            Console.WriteLine("1. Import countries and cities from json and excel.");
-            Console.WriteLine("2. Import players from sql server to postgresql");
+            
+
+            Console.WriteLine("1. Import countries from json file to sql server");
+            Console.WriteLine("2. Import cities from excell to sql server");
             Console.WriteLine();
 
             while (true)
