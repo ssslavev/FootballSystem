@@ -112,7 +112,7 @@
             Console.Write("Team stadium: ");
             var teamStadium = Console.ReadLine();
             Console.Write("Team country: ");
-            var teamCountry = Console.ReadLine(); 
+            var teamCountry = Console.ReadLine();
             Console.Write("Team Championship: ");
             var teamChampionship = Console.ReadLine();
             Console.Write("Team City: ");
@@ -144,6 +144,30 @@
             Console.WriteLine(new String('*', 50));
         }
 
+        static void RemovePlayer()
+        {
+            var db = new FootballDbContext();
+
+            Console.Write("Player name: ");
+            var playerName = Console.ReadLine();
+
+            var row = db.Database.ExecuteSqlCommand($"DELETE FROM Players WHERE FirstName = '{playerName}'");
+
+            if (row==1)
+            {
+                Console.WriteLine($"The player {playerName} was deleted!");
+                Console.WriteLine(new String('*', 50));
+            }
+            else
+            {
+                Console.WriteLine($"No player with that name!");
+                Console.WriteLine(new String('*', 50));
+            }
+
+            
+            
+        }
+
         static void Main()
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<FootballDbContext, Configuration>());
@@ -158,6 +182,7 @@
             Console.WriteLine("1. Import countries from json file to sql server");
             Console.WriteLine("2. Import cities from excell to sql server");
             Console.WriteLine("3. Add new player");
+            Console.WriteLine("4. Remove player by player first name");
             Console.WriteLine();
 
             while (true)
@@ -180,6 +205,11 @@
                 else if (commandNumber == 3)
                 {
                     AddPlayer();
+                }
+
+                else if (commandNumber == 4)
+                {
+                    RemovePlayer();
                 }
 
 
