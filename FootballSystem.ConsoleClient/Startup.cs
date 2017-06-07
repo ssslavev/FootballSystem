@@ -91,19 +91,73 @@
 
         }
 
+        static void AddPlayer()
+        {
+            var db = new FootballDbContext();
+
+            Console.Write("First name: ");
+            var firstName = Console.ReadLine();
+            Console.Write("Last name: ");
+            var lastName = Console.ReadLine();
+            Console.Write("Age: ");
+            var age = int.Parse(Console.ReadLine());
+            Console.Write("Salary: ");
+            var salary = int.Parse(Console.ReadLine());
+            Console.Write("Player country: ");
+            var playerCountry = Console.ReadLine();
+            Console.Write("Team name: ");
+            var teamName = Console.ReadLine();
+            Console.Write("Team manager: ");
+            var teamManager = Console.ReadLine();
+            Console.Write("Team stadium: ");
+            var teamStadium = Console.ReadLine();
+            Console.Write("Team country: ");
+            var teamCountry = Console.ReadLine(); 
+            Console.Write("Team Championship: ");
+            var teamChampionship = Console.ReadLine();
+            Console.Write("Team City: ");
+            var teamCity = Console.ReadLine();
+
+
+            var player = new Player
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Age = age,
+                Salary = salary,
+                Country = new Country { Name = playerCountry },
+                Team = new Team
+                {
+                    Name = teamName,
+                    Manager = teamManager,
+                    Stadium = teamStadium,
+                    Country = new Country { Name = teamCountry },
+                    Championship = new Championship { Name = teamChampionship },
+                    City = new City { Name = teamCity }
+                },
+
+            };
+
+            db.Players.Add(player);
+            db.SaveChanges();
+            Console.WriteLine($"Player {firstName} {lastName} was added!");
+            Console.WriteLine(new String('*', 50));
+        }
+
         static void Main()
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<FootballDbContext, Configuration>());
+
+            var db = new FootballDbContext();
 
             var postgresqlDb = new FootballPostgresqlDbContext();
 
             var sqliteDb = new FootballSQLiteDbContext();
 
 
-            
-
             Console.WriteLine("1. Import countries from json file to sql server");
             Console.WriteLine("2. Import cities from excell to sql server");
+            Console.WriteLine("3. Add new player");
             Console.WriteLine();
 
             while (true)
@@ -122,6 +176,13 @@
                 {
                     ImportCitiesFromExcellToSQLServer();
                 }
+
+                else if (commandNumber == 3)
+                {
+                    AddPlayer();
+                }
+
+
             }
         }
     }
