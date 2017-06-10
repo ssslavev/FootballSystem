@@ -153,7 +153,7 @@
 
             var row = db.Database.ExecuteSqlCommand($"DELETE FROM Players WHERE FirstName = '{playerName}'");
 
-            if (row==1)
+            if (row == 1)
             {
                 Console.WriteLine($"The player {playerName} was deleted!");
                 Console.WriteLine(new String('*', 50));
@@ -164,9 +164,48 @@
                 Console.WriteLine(new String('*', 50));
             }
 
-            
-            
+
+
         }
+
+        static void FindPlayer()
+        {
+            var db = new FootballDbContext();
+
+            Console.Write("Player name: ");
+            var playerName = Console.ReadLine();
+
+            var player = db.Players.Where(pl => pl.FirstName == playerName).Select(pl => new
+            {
+                FullName = pl.FirstName + " " + pl.LastName,
+                Age = pl.Age,
+                Salary = pl.Salary,
+                CountryName = pl.Country.Name,
+                TeamName = pl.Team.Name,
+                ManagerName = pl.Team.Manager,
+                StadiumName = pl.Team.Stadium,
+                CityName = pl.Team.City.Name
+
+
+            });
+
+            foreach (var p in player)
+            {
+                Console.Write($@"
+   Name:    { p.FullName}
+   Age:     {p.Age}
+   Country: {p.CountryName}
+   Salary:  {p.Salary}
+   Team:    {p.TeamName}
+   Manager: {p.ManagerName}
+   Stadium: {p.StadiumName}
+   City:    {p.CityName} 
+   ");
+            }
+
+            Console.WriteLine(new String('*', 50));
+        }
+
 
         static void Main()
         {
@@ -183,6 +222,7 @@
             Console.WriteLine("2. Import cities from excell to sql server");
             Console.WriteLine("3. Add new player");
             Console.WriteLine("4. Remove player by player first name");
+            Console.WriteLine("5. Find player by name");
             Console.WriteLine();
 
             while (true)
@@ -210,6 +250,14 @@
                 else if (commandNumber == 4)
                 {
                     RemovePlayer();
+                }
+                else if (commandNumber == 5)
+                {
+                    FindPlayer();
+                }
+                else
+                {
+                    Console.WriteLine("Wrong command number!!!");
                 }
 
 
