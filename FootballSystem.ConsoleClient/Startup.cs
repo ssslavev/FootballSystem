@@ -206,6 +206,32 @@
             Console.WriteLine(new String('*', 50));
         }
 
+        static void EditPlayerSalary()
+        {
+            var db = new FootballDbContext();
+
+            Console.Write("Player name to change salary: ");
+            var playerName = Console.ReadLine();
+
+            var player = db.Players.SingleOrDefault(p => p.FirstName == playerName);
+
+            if (player == null)
+            {
+                Console.WriteLine($"No player with that name!");
+                Console.WriteLine(new String('*', 50));
+            }
+            else
+            {
+                Console.Write("Enter new salary: ");
+                var newSalary = decimal.Parse(Console.ReadLine());
+                player.Salary = newSalary;
+
+                db.SaveChanges();
+                Console.WriteLine($"Player {player.FirstName} {player.LastName} has a new salary!");
+                Console.WriteLine(new String('*', 50));
+            }
+
+        }
 
         static void Main()
         {
@@ -223,6 +249,7 @@
             Console.WriteLine("3. Add new player");
             Console.WriteLine("4. Remove player by player first name");
             Console.WriteLine("5. Find player by name");
+            Console.WriteLine("6. Edit player salary by name");
             Console.WriteLine();
 
             while (true)
@@ -254,6 +281,10 @@
                 else if (commandNumber == 5)
                 {
                     FindPlayer();
+                }
+                else if (commandNumber == 6)
+                {
+                    EditPlayerSalary();
                 }
                 else
                 {
