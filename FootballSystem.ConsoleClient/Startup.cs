@@ -12,6 +12,7 @@
     using Excel;
     using System.Data;
     using System.Xml.Linq;
+    using System.Xml.XPath;
 
     public class Startup
     {
@@ -233,7 +234,7 @@
             }
 
         }
-
+        
         static void exportToXML()
         {
             var context = new FootballDbContext();
@@ -244,10 +245,12 @@
                 Salary = pl.Salary,
                 CountryName = pl.Country.Name,
                 TeamName = pl.Team.Name,
+                TeamCountryName = pl.Team.Country.Name,
                 ManagerName = pl.Team.Manager,
                 StadiumName = pl.Team.Stadium,
+                Championshp = pl.Team.Championship.Name,
                 CityName = pl.Team.City.Name,
-                TeamCountryName = pl.Team.Country.Name
+                TeamCountry = pl.Team.Country.Name
             });
 
             var xmlPlayers = new XElement("Players");
@@ -263,7 +266,9 @@
                                         new XElement("manager", player.ManagerName),
                                         new XElement("stadium", player.StadiumName),
                                         new XElement("city", player.CityName),
-                                        new XElement("country", player.TeamCountryName)
+                                        new XElement("country", player.TeamCountryName),
+                                        new XElement("championship", player.Championshp),
+                                        new XElement("country", player.TeamCountry)
                                         )
                                     );
                 curPlayer.Add(new XAttribute("name", player.FullName));
@@ -273,6 +278,50 @@
             var xmlDoc = new XDocument(xmlPlayers);
             xmlDoc.Save("Players.xml");
         }
+        
+        static void importFromXML()
+        {
+            var xmlDoc = XDocument.Load(@"players.xml");
+            var playerNodes = xmlDoc.XPathSelectElements("Players/Player");
+            var db = new FootballDbContext();
+
+            foreach (var pl in playerNodes)
+            {
+                string[] fullName = pl.Attribute("name").Value.Split();
+                int age = int.Parse(pl.Element("age").Value);
+                decimal salary = decimal.Parse(pl.Element("salary").Value);
+                string country = pl.Element("country").Value;
+                string teamName = pl.Element("team").Attribute("name").Value;
+                string manager = pl.Element("team").Element("manager").Value;
+                string stadium = pl.Element("team").Element("stadium").Value;
+                string city = pl.Element("team").Element("city").Value;
+                string championship = pl.Element("team").Element("championship").Value;
+                string teamCountry = pl.Element("team").Element("country").Value;
+
+                var player = new Player
+                {
+                    FirstName = fullName[0],
+                    LastName = fullName[1],
+                    Age = age,
+                    Salary = salary,
+                    Country = new Country { Name = country },
+                    Team = new Team
+                    {
+                        Name = teamName,
+                        Manager = manager,
+                        Stadium = stadium,
+                        Country = new Country { Name = teamCountry },
+                        Championship = new Championship { Name = championship },
+                        City = new City { Name = city }
+                    },
+
+                };
+
+                db.Players.Add(player);
+                db.SaveChanges();
+            }
+        }
+
 
         static void Main()
         {
@@ -292,6 +341,7 @@
             Console.WriteLine("5. Find player by name");
             Console.WriteLine("6. Edit player salary by name");
             Console.WriteLine("7. Export players to xml");
+            Console.WriteLine("8. Import data from xml");
             Console.WriteLine();
 
             while (true)
@@ -331,6 +381,10 @@
                 else if (commandNumber == 7)
                 {
                     exportToXML();
+                }
+                else if (commandNumber == 8)
+                {
+                    importFromXML();
                 }
                 else
                 {
