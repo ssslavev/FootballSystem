@@ -13,9 +13,9 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (this.components != null))
             {
-                components.Dispose();
+                this.components.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -49,7 +49,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.AddPlayerButton = new System.Windows.Forms.Button();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -231,13 +231,13 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(340, 395);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Add player";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.AddPlayerButton.Location = new System.Drawing.Point(340, 395);
+            this.AddPlayerButton.Name = "button1";
+            this.AddPlayerButton.Size = new System.Drawing.Size(75, 23);
+            this.AddPlayerButton.TabIndex = 4;
+            this.AddPlayerButton.Text = "Add player";
+            this.AddPlayerButton.UseVisualStyleBackColor = true;
+            this.AddPlayerButton.Click += new System.EventHandler(this.AddPlayerClick);
             // 
             // comboBox3
             // 
@@ -255,7 +255,7 @@
             this.button2.TabIndex = 5;
             this.button2.Text = "Import countries";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.ImportCountriesClick);
             // 
             // button3
             // 
@@ -265,7 +265,7 @@
             this.button3.TabIndex = 6;
             this.button3.Text = "Import cities";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.ImportCitiesClick);
             // 
             // button4
             // 
@@ -306,7 +306,7 @@
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.AddPlayerButton);
             this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.comboBox1);
@@ -359,7 +359,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button AddPlayerButton;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;

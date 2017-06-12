@@ -1,14 +1,14 @@
 ﻿namespace FootballSystem.Data
 {
-    using Models;
     using System.Data.Entity;
-   public class FootballPostgresqlDbContext : DbContext
+
+    using Models;
+
+    public class FootballPostgresqlDbContext : DbContext
     {
-
         public FootballPostgresqlDbContext()
-            :base("PostgresFootball")
+            : base("PostgresFootball")
         {
-
         }
 
         public IDbSet<Player> Players { get; set; }
@@ -23,7 +23,6 @@
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            
             modelBuilder.HasDefaultSchema("public");
             base.OnModelCreating(modelBuilder);
         }

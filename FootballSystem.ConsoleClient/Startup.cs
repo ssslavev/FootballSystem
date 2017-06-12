@@ -1,19 +1,24 @@
 ﻿namespace FootballSystem.ConsoleClient
 {
-    using Data.Migrations;
-    using Data;
-    using Models;
     using System;
-    using System.Data.Entity;
-    using System.Linq;
-    using System.IO;
-    using Newtonsoft.Json;
     using System.Collections.Generic;
-    using Excel;
     using System.Data;
+    using System.Data.Entity;
+    using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+    using System.Linq;
+    using System.Windows.Forms;
     using System.Xml.Linq;
     using System.Xml.XPath;
-    using System.Windows.Forms;
+
+    using Data;
+    using Data.Migrations;
+
+    using Excel;
+
+    using Models;
+
+    using Newtonsoft.Json;
 
     public class Startup
     {
@@ -46,19 +51,16 @@
 
                 DbContext.Countries.Add(countryToAdd);
                 counter++;
-
             }
 
             DbContext.SaveChanges();
 
             Console.WriteLine($"{counter} countries was added!");
-            Console.WriteLine(new String('*', 50));
-
+            Console.WriteLine(new string('*', 50));
         }
 
-        private static void ImportCitiesFromExcellToSQLServer()
+        private static void ImportCitiesFromExcellToSqlServer()
         {
-            //import cities from excell file
             FileStream stream = File.Open(Directory.GetCurrentDirectory() + "/cities.xlsx", FileMode.Open, FileAccess.Read);
 
             IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
@@ -72,12 +74,9 @@
 
             foreach (DataRow row in dt.Rows)
             {
-
-
                 string countryName = row.Field<string>(1).Trim();
 
                 var country = DbContext.Countries.FirstOrDefault(co => co.Name == countryName);
-
 
                 var cityToAdd = new City
                 {
@@ -87,15 +86,13 @@
 
                 DbContext.Cities.Add(cityToAdd);
                 counter++;
-
             }
 
             DbContext.SaveChanges();
             excelReader.Close();
 
             Console.WriteLine($"{counter} cities was added!");
-            Console.WriteLine(new String('*', 50));
-
+            Console.WriteLine(new string('*', 50));
         }
 
         private static void AddPlayer()
@@ -139,13 +136,12 @@
                     Championship = new Championship { Name = teamChampionship },
                     City = new City { Name = teamCity }
                 },
-
             };
 
             DbContext.Players.Add(player);
             DbContext.SaveChanges();
             Console.WriteLine($"Player {firstName} {lastName} was added!");
-            Console.WriteLine(new String('*', 50));
+            Console.WriteLine(new string('*', 50));
         }
 
         private static void RemovePlayer()
@@ -158,12 +154,12 @@
             if (row == 1)
             {
                 Console.WriteLine($"The player {playerName} was deleted!");
-                Console.WriteLine(new String('*', 50));
+                Console.WriteLine(new string('*', 50));
             }
             else
             {
                 Console.WriteLine($"No player with that name!");
-                Console.WriteLine(new String('*', 50));
+                Console.WriteLine(new string('*', 50));
             }
         }
 
@@ -182,8 +178,6 @@
                 ManagerName = pl.Team.Manager,
                 StadiumName = pl.Team.Stadium,
                 CityName = pl.Team.City.Name
-
-
             });
 
             foreach (var p in player)
@@ -200,7 +194,7 @@
    ");
             }
 
-            Console.WriteLine(new String('*', 50));
+            Console.WriteLine(new string('*', 50));
         }
 
         private static void EditPlayerSalary()
@@ -213,7 +207,7 @@
             if (player == null)
             {
                 Console.WriteLine($"No player with that name!");
-                Console.WriteLine(new String('*', 50));
+                Console.WriteLine(new string('*', 50));
             }
             else
             {
@@ -223,27 +217,28 @@
 
                 DbContext.SaveChanges();
                 Console.WriteLine($"Player {player.FirstName} {player.LastName} has a new salary!");
-                Console.WriteLine(new String('*', 50));
+                Console.WriteLine(new string('*', 50));
             }
-
         }
 
-        private static void exportToXML()
+        [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1116:SplitParametersMustStartOnLineAfterDeclaration", Justification = "Reviewed. Suppression is OK here.")]
+        private static void ExportToXml()
         {
-            var playerQuery = DbContext.Players.Select(pl => new
-            {
-                FullName = pl.FirstName + " " + pl.LastName,
-                Age = pl.Age,
-                Salary = pl.Salary,
-                CountryName = pl.Country.Name,
-                TeamName = pl.Team.Name,
-                TeamCountryName = pl.Team.Country.Name,
-                ManagerName = pl.Team.Manager,
-                StadiumName = pl.Team.Stadium,
-                Championshp = pl.Team.Championship.Name,
-                CityName = pl.Team.City.Name,
-                TeamCountry = pl.Team.Country.Name
-            });
+            var playerQuery = DbContext.Players.Select(
+                pl => new
+                {
+                    FullName = pl.FirstName + " " + pl.LastName,
+                    Age = pl.Age,
+                    Salary = pl.Salary,
+                    CountryName = pl.Country.Name,
+                    TeamName = pl.Team.Name,
+                    TeamCountryName = pl.Team.Country.Name,
+                    ManagerName = pl.Team.Manager,
+                    StadiumName = pl.Team.Stadium,
+                    Championshp = pl.Team.Championship.Name,
+                    CityName = pl.Team.City.Name,
+                    TeamCountry = pl.Team.Country.Name
+                });
 
             var xmlPlayers = new XElement("Players");
 
@@ -260,9 +255,7 @@
                                         new XElement("city", player.CityName),
                                         new XElement("country", player.TeamCountryName),
                                         new XElement("championship", player.Championshp),
-                                        new XElement("country", player.TeamCountry)
-                                        )
-                                    );
+                                        new XElement("country", player.TeamCountry)));
                 curPlayer.Add(new XAttribute("name", player.FullName));
                 xmlPlayers.Add(curPlayer);
             }
@@ -271,7 +264,7 @@
             xmlDoc.Save("Players.xml");
         }
 
-        private static void importFromXML()
+        private static void ImportFromXml()
         {
             var xmlDoc = XDocument.Load(@"players.xml");
             var playerNodes = xmlDoc.XPathSelectElements("Players/Player");
@@ -305,8 +298,7 @@
                         Country = new Country { Name = teamCountry },
                         Championship = new Championship { Name = championship },
                         City = new City { Name = city }
-                    },
-
+                    }
                 };
 
                 db.Players.Add(player);
@@ -336,44 +328,35 @@
 
                 var commandNumber = int.Parse(Console.ReadLine());
 
-                if (commandNumber == 1)
+                switch (commandNumber)
                 {
-                    ImportCountriesFromJsontoSqlServer();
-
-                }
-                else if (commandNumber == 2)
-                {
-                    ImportCitiesFromExcellToSQLServer();
-                }
-
-                else if (commandNumber == 3)
-                {
-                    AddPlayer();
-                }
-
-                else if (commandNumber == 4)
-                {
-                    RemovePlayer();
-                }
-                else if (commandNumber == 5)
-                {
-                    FindPlayer();
-                }
-                else if (commandNumber == 6)
-                {
-                    EditPlayerSalary();
-                }
-                else if (commandNumber == 7)
-                {
-                    exportToXML();
-                }
-                else if (commandNumber == 8)
-                {
-                    importFromXML();
-                }
-                else
-                {
-                    Console.WriteLine("Wrong command number!!!");
+                    case 1:
+                        ImportCountriesFromJsontoSqlServer();
+                        break;
+                    case 2:
+                        ImportCitiesFromExcellToSqlServer();
+                        break;
+                    case 3:
+                        AddPlayer();
+                        break;
+                    case 4:
+                        RemovePlayer();
+                        break;
+                    case 5:
+                        FindPlayer();
+                        break;
+                    case 6:
+                        EditPlayerSalary();
+                        break;
+                    case 7:
+                        ExportToXml();
+                        break;
+                    case 8:
+                        ImportFromXml();
+                        break;
+                    default:
+                        Console.WriteLine("Wrong command number!!!");
+                        break;
                 }
             }
         }

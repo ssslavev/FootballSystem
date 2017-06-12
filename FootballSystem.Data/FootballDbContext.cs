@@ -1,15 +1,17 @@
 ﻿namespace FootballSystem.Data
 {
-    using FootballSystem.Models;
     using System.Data.Entity;
+
+    using Models;
+
     public class FootballDbContext : DbContext
     {
-
         public FootballDbContext()
-            :base("FootballDatabase")
+            : base("FootballDatabase")
         {
             Database.SetInitializer<FootballDbContext>(new CreateDatabaseIfNotExists<FootballDbContext>());
         }
+
         public IDbSet<Player> Players { get; set; }
 
         public IDbSet<Team> Teams { get; set; }

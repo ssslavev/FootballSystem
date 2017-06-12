@@ -1,24 +1,21 @@
 namespace FootballSystem.Data.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
     public sealed class Configuration : DbMigrationsConfiguration<FootballDbContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            this.AutomaticMigrationsEnabled = true;
             this.AutomaticMigrationDataLossAllowed = true;
-            ContextKey = "FootballSystem.Data.FootballDbContext";
+            this.ContextKey = "FootballSystem.Data.FootballDbContext";
         }
 
         protected override void Seed(FootballDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            // This method will be called after migrating to the latest version.
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+            // You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data. E.g.
             //
             //    context.People.AddOrUpdate(
@@ -27,7 +24,6 @@ namespace FootballSystem.Data.Migrations
             //      new Person { FullName = "Brice Lambson" },
             //      new Person { FullName = "Rowan Miller" }
             //    );
-            //
         }
     }
 }

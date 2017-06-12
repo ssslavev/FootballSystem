@@ -1,16 +1,17 @@
 ﻿namespace FootballSystem.Models
 {
-
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class Team
     {
         private ICollection<Player> players;
+
         public Team()
         {
             this.players = new HashSet<Player>();
         }
+
         public int Id { get; set; }
 
         [Required]

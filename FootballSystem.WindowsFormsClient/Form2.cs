@@ -1,34 +1,23 @@
-﻿using FootballSystem.Data;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace FootballSystem.WindowsFormsClient
+﻿namespace FootballSystem.WindowsFormsClient
 {
+    using System;
+    using System.Linq;
+    using System.Windows.Forms;
+
+    using FootballSystem.Data;
+
     public partial class Form2 : Form
     {
         public Form2()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
-        private void Form2_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void FindClick(object sender, EventArgs e)
         {
             var db = new FootballDbContext();
 
-
-            var playerName = textBox1.Text;
+            var playerName = this.textBox1.Text;
 
             var player = db.Players.Where(pl => pl.FirstName == playerName).Select(pl => new
             {
@@ -40,11 +29,9 @@ namespace FootballSystem.WindowsFormsClient
                 ManagerName = pl.Team.Manager,
                 StadiumName = pl.Team.Stadium,
                 CityName = pl.Team.City.Name
-
-
             });
 
-            var str = "";
+            var str = string.Empty;
 
             foreach (var p in player)
             {
@@ -60,8 +47,7 @@ namespace FootballSystem.WindowsFormsClient
    ";
             }
 
-
-            label2.Text = str;
+            this.label2.Text = str;
         }
     }
 }

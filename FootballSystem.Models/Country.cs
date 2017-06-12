@@ -40,7 +40,5 @@
             get { return this.cities; }
             set { this.cities = value; }
         }
-
-
     }
 }

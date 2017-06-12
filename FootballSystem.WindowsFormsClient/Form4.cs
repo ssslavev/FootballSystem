@@ -1,45 +1,37 @@
-﻿using FootballSystem.Data;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace FootballSystem.WindowsFormsClient
+﻿namespace FootballSystem.WindowsFormsClient
 {
+    using System;
+    using System.Linq;
+    using System.Windows.Forms;
+
+    using FootballSystem.Data;
+
     public partial class Form4 : Form
     {
         public Form4()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void UpdateClick(object sender, EventArgs e)
         {
             var db = new FootballDbContext();
 
-            var playerName = textBox1.Text;
+            var playerName = this.textBox1.Text;
 
             var player = db.Players.SingleOrDefault(p => p.FirstName == playerName);
 
             if (player == null)
             {
-                MessageBox.Show($"No player with that name!");
-                
+                MessageBox.Show(@"No player with that name!");   
             }
             else
             {
-
-                var newSalary = decimal.Parse(textBox2.Text);
+                var newSalary = decimal.Parse(this.textBox2.Text);
                 player.Salary = newSalary;
 
                 db.SaveChanges();
-                MessageBox.Show($"Player {player.FirstName} {player.LastName} has a new salary!");
-                
+                MessageBox.Show($@"Player {player.FirstName} {player.LastName} has a new salary!");
             }
         }
     }

@@ -5,8 +5,8 @@
 
     public class Championship
     {
-
         private ICollection<Team> teams;
+
         public Championship()
         {
             this.teams = new HashSet<Team>();
@@ -24,7 +24,5 @@
             get { return this.teams; }
             set { this.teams = value; }
         }
-
-
     }
 }
