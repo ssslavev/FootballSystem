@@ -246,7 +246,8 @@
                 TeamName = pl.Team.Name,
                 ManagerName = pl.Team.Manager,
                 StadiumName = pl.Team.Stadium,
-                CityName = pl.Team.City.Name
+                CityName = pl.Team.City.Name,
+                TeamCountryName = pl.Team.Country.Name
             });
 
             var xmlPlayers = new XElement("Players");
@@ -261,12 +262,12 @@
                                         new XAttribute("name", player.TeamName),
                                         new XElement("manager", player.ManagerName),
                                         new XElement("stadium", player.StadiumName),
-                                        new XElement("city", player.CityName)
+                                        new XElement("city", player.CityName),
+                                        new XElement("country", player.TeamCountryName)
                                         )
                                     );
                 curPlayer.Add(new XAttribute("name", player.FullName));
                 xmlPlayers.Add(curPlayer);
-                xmlPlayers.Add(new XElement("age", player.Age));
             }
 
             var xmlDoc = new XDocument(xmlPlayers);
