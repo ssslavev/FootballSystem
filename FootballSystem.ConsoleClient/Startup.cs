@@ -19,7 +19,7 @@
     using Models;
 
     using Newtonsoft.Json;
-
+    
     public class Startup
     {
         private static readonly FootballDbContext DbContext = new FootballDbContext();
