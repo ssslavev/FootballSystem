@@ -1,5 +1,8 @@
-﻿using System;
+﻿using FootballSystem.Data;
+using FootballSystem.Data.Migrations;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +17,11 @@ namespace FootballSystem.WindowsFormsClient
         [STAThread]
         static void Main()
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<FootballDbContext, Configuration>());
+
+            var db = new FootballDbContext();
+            db.Players.Count();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

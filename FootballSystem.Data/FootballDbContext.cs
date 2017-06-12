@@ -8,7 +8,7 @@
         public FootballDbContext()
             :base("FootballDatabase")
         {
-
+            Database.SetInitializer<FootballDbContext>(new CreateDatabaseIfNotExists<FootballDbContext>());
         }
         public IDbSet<Player> Players { get; set; }
 
