@@ -21,7 +21,20 @@ namespace FootballSystem.WindowsFormsClient
         public Form1()
         {
             InitializeComponent();
+            
 
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2();
+            form2.Show();
+
+            Form3 form3 = new Form3();
+            form2.Show();
+
+            Form4 form4 = new Form4();
+            form2.Show();
         }
 
         void FillCountries()
@@ -157,6 +170,20 @@ namespace FootballSystem.WindowsFormsClient
             MessageBox.Show($"{counter} cities was added!");
 
             FillCities();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2();
+            form2.Show();
+            this.Hide();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Form3 form3 = new Form3();
+            form3.Show();
+            this.Hide();
         }
     }
 }
