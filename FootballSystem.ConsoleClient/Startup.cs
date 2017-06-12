@@ -11,6 +11,7 @@
     using System.Collections.Generic;
     using Excel;
     using System.Data;
+    using System.Xml.Linq;
 
     public class Startup
     {
@@ -233,6 +234,45 @@
 
         }
 
+        static void exportToXML()
+        {
+            var context = new FootballDbContext();
+            var playerQuery = context.Players.Select(pl => new
+            {
+                FullName = pl.FirstName + " " + pl.LastName,
+                Age = pl.Age,
+                Salary = pl.Salary,
+                CountryName = pl.Country.Name,
+                TeamName = pl.Team.Name,
+                ManagerName = pl.Team.Manager,
+                StadiumName = pl.Team.Stadium,
+                CityName = pl.Team.City.Name
+            });
+
+            var xmlPlayers = new XElement("Players");
+
+            foreach (var player in playerQuery)
+            {
+                var curPlayer = new XElement("Player",
+                                    new XElement("age", player.Age),
+                                    new XElement("salary", player.Salary),
+                                    new XElement("country", player.CountryName),
+                                    new XElement("team",
+                                        new XAttribute("name", player.TeamName),
+                                        new XElement("manager", player.ManagerName),
+                                        new XElement("stadium", player.StadiumName),
+                                        new XElement("city", player.CityName)
+                                        )
+                                    );
+                curPlayer.Add(new XAttribute("name", player.FullName));
+                xmlPlayers.Add(curPlayer);
+                xmlPlayers.Add(new XElement("age", player.Age));
+            }
+
+            var xmlDoc = new XDocument(xmlPlayers);
+            xmlDoc.Save("Players.xml");
+        }
+
         static void Main()
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<FootballDbContext, Configuration>());
@@ -250,6 +290,7 @@
             Console.WriteLine("4. Remove player by player first name");
             Console.WriteLine("5. Find player by name");
             Console.WriteLine("6. Edit player salary by name");
+            Console.WriteLine("7. Export players to xml");
             Console.WriteLine();
 
             while (true)
@@ -286,6 +327,10 @@
                 {
                     EditPlayerSalary();
                 }
+                else if (commandNumber == 7)
+                {
+                    exportToXML();
+                }
                 else
                 {
                     Console.WriteLine("Wrong command number!!!");
@@ -296,11 +341,3 @@
         }
     }
 }
-
-
-
-
-
-
-
-
