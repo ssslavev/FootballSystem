@@ -13,19 +13,28 @@
     using System.Data;
     using System.Xml.Linq;
     using System.Xml.XPath;
+    using System.Windows.Forms;
 
     public class Startup
     {
-        static void ImportCountriesFromJSONToSQLServer()
-        {
-            //import countries from json file
-            var countriesToAdd = Directory.GetFiles(Directory.GetCurrentDirectory())
-                    .Where(f => f.EndsWith("json"))
-                    .Select(f => File.ReadAllText(f))
-                    .SelectMany(str => JsonConvert.DeserializeObject<IEnumerable<ParseModel>>(str))
-                    .ToList();
+        private static readonly FootballDbContext DbContext = new FootballDbContext();
 
-            var db = new FootballDbContext();
+        private static void ImportCountriesFromJsontoSqlServer()
+        {
+            var fileBrowser = new OpenFileDialog
+            {
+                Filter = "JSON Document|*.json"
+            };
+
+            if (fileBrowser.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            var file = File.ReadAllText(fileBrowser.FileName);
+            
+            var countriesToAdd = JsonConvert.DeserializeObject<IEnumerable<ParseModel>>(file).ToList();
+            
             var counter = 0;
 
             foreach (var country in countriesToAdd)
@@ -35,28 +44,24 @@
                     Name = country.Name
                 };
 
-                db.Countries.Add(countryToAdd);
+                DbContext.Countries.Add(countryToAdd);
                 counter++;
 
             }
 
-            db.SaveChanges();
+            DbContext.SaveChanges();
 
             Console.WriteLine($"{counter} countries was added!");
             Console.WriteLine(new String('*', 50));
 
         }
 
-        static void ImportCitiesFromExcellToSQLServer()
+        private static void ImportCitiesFromExcellToSQLServer()
         {
-            var db = new FootballDbContext();
-
             //import cities from excell file
             FileStream stream = File.Open(Directory.GetCurrentDirectory() + "/cities.xlsx", FileMode.Open, FileAccess.Read);
 
             IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-
-
 
             excelReader.IsFirstRowAsColumnNames = true;
             DataSet result = excelReader.AsDataSet();
@@ -71,7 +76,7 @@
 
                 string countryName = row.Field<string>(1).Trim();
 
-                var country = db.Countries.FirstOrDefault(co => co.Name == countryName);
+                var country = DbContext.Countries.FirstOrDefault(co => co.Name == countryName);
 
 
                 var cityToAdd = new City
@@ -80,12 +85,12 @@
                     Country = country
                 };
 
-                db.Cities.Add(cityToAdd);
+                DbContext.Cities.Add(cityToAdd);
                 counter++;
 
             }
 
-            db.SaveChanges();
+            DbContext.SaveChanges();
             excelReader.Close();
 
             Console.WriteLine($"{counter} cities was added!");
@@ -93,10 +98,8 @@
 
         }
 
-        static void AddPlayer()
+        private static void AddPlayer()
         {
-            var db = new FootballDbContext();
-
             Console.Write("First name: ");
             var firstName = Console.ReadLine();
             Console.Write("Last name: ");
@@ -120,7 +123,6 @@
             Console.Write("Team City: ");
             var teamCity = Console.ReadLine();
 
-
             var player = new Player
             {
                 FirstName = firstName,
@@ -140,20 +142,18 @@
 
             };
 
-            db.Players.Add(player);
-            db.SaveChanges();
+            DbContext.Players.Add(player);
+            DbContext.SaveChanges();
             Console.WriteLine($"Player {firstName} {lastName} was added!");
             Console.WriteLine(new String('*', 50));
         }
 
-        static void RemovePlayer()
+        private static void RemovePlayer()
         {
-            var db = new FootballDbContext();
-
             Console.Write("Player name: ");
             var playerName = Console.ReadLine();
 
-            var row = db.Database.ExecuteSqlCommand($"DELETE FROM Players WHERE FirstName = '{playerName}'");
+            var row = DbContext.Database.ExecuteSqlCommand($"DELETE FROM Players WHERE FirstName = '{playerName}'");
 
             if (row == 1)
             {
@@ -165,19 +165,14 @@
                 Console.WriteLine($"No player with that name!");
                 Console.WriteLine(new String('*', 50));
             }
-
-
-
         }
 
-        static void FindPlayer()
+        private static void FindPlayer()
         {
-            var db = new FootballDbContext();
-
             Console.Write("Player name: ");
             var playerName = Console.ReadLine();
 
-            var player = db.Players.Where(pl => pl.FirstName == playerName).Select(pl => new
+            var player = DbContext.Players.Where(pl => pl.FirstName == playerName).Select(pl => new
             {
                 FullName = pl.FirstName + " " + pl.LastName,
                 Age = pl.Age,
@@ -194,7 +189,7 @@
             foreach (var p in player)
             {
                 Console.Write($@"
-   Name:    { p.FullName}
+   Name:    {p.FullName}
    Age:     {p.Age}
    Country: {p.CountryName}
    Salary:  {p.Salary}
@@ -208,14 +203,12 @@
             Console.WriteLine(new String('*', 50));
         }
 
-        static void EditPlayerSalary()
+        private static void EditPlayerSalary()
         {
-            var db = new FootballDbContext();
-
             Console.Write("Player name to change salary: ");
             var playerName = Console.ReadLine();
 
-            var player = db.Players.SingleOrDefault(p => p.FirstName == playerName);
+            var player = DbContext.Players.SingleOrDefault(p => p.FirstName == playerName);
 
             if (player == null)
             {
@@ -228,17 +221,16 @@
                 var newSalary = decimal.Parse(Console.ReadLine());
                 player.Salary = newSalary;
 
-                db.SaveChanges();
+                DbContext.SaveChanges();
                 Console.WriteLine($"Player {player.FirstName} {player.LastName} has a new salary!");
                 Console.WriteLine(new String('*', 50));
             }
 
         }
-        
-        static void exportToXML()
+
+        private static void exportToXML()
         {
-            var context = new FootballDbContext();
-            var playerQuery = context.Players.Select(pl => new
+            var playerQuery = DbContext.Players.Select(pl => new
             {
                 FullName = pl.FirstName + " " + pl.LastName,
                 Age = pl.Age,
@@ -278,8 +270,8 @@
             var xmlDoc = new XDocument(xmlPlayers);
             xmlDoc.Save("Players.xml");
         }
-        
-        static void importFromXML()
+
+        private static void importFromXML()
         {
             var xmlDoc = XDocument.Load(@"players.xml");
             var playerNodes = xmlDoc.XPathSelectElements("Players/Player");
@@ -322,18 +314,11 @@
             }
         }
 
-
-        static void Main()
+        [STAThread]
+        private static void Main()
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<FootballDbContext, Configuration>());
-
-            var db = new FootballDbContext();
-
-            var postgresqlDb = new FootballPostgresqlDbContext();
-
-            var sqliteDb = new FootballSQLiteDbContext();
-
-
+            
             Console.WriteLine("1. Import countries from json file to sql server");
             Console.WriteLine("2. Import cities from excell to sql server");
             Console.WriteLine("3. Add new player");
@@ -353,7 +338,7 @@
 
                 if (commandNumber == 1)
                 {
-                    ImportCountriesFromJSONToSQLServer();
+                    ImportCountriesFromJsontoSqlServer();
 
                 }
                 else if (commandNumber == 2)
@@ -390,8 +375,6 @@
                 {
                     Console.WriteLine("Wrong command number!!!");
                 }
-
-
             }
         }
     }
