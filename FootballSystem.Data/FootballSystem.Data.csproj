@@ -69,6 +69,7 @@
     <Compile Include="FootballPostgresqlDbContext.cs" />
     <Compile Include="FootballSQLiteDbContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="ModelCreating.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

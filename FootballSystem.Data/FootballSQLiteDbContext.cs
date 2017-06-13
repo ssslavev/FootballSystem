@@ -26,7 +26,12 @@
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<FootballSQLiteDbContext>(modelBuilder);
+
+            ModelCreating.AllModels(modelBuilder);
+
             Database.SetInitializer(sqliteConnectionInitializer);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

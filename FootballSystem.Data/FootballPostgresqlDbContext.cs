@@ -24,6 +24,9 @@
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("public");
+
+            ModelCreating.AllModels(modelBuilder);
+
             base.OnModelCreating(modelBuilder);
         }
     }

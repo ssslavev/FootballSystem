@@ -26,18 +26,9 @@
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            OnCityModelCreating(modelBuilder);
+            ModelCreating.AllModels(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
-        }
-
-        private static void OnCityModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<City>()
-                .HasRequired(c => c.Country)
-                .WithMany(c => c.Cities)
-                .HasForeignKey(c => c.CountryId)
-                .WillCascadeOnDelete(false);
         }
     }
 }
