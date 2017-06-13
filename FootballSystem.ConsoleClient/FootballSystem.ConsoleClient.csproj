@@ -117,6 +117,10 @@
       <Project>{dcd9a13d-859d-4f47-915f-f1aa1647b9e9}</Project>
       <Name>FootballSystem.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FootballSystemPDFReporter\FootballSystemPDFReporter.csproj">
+      <Project>{e29e3753-c114-4cd5-8eb5-ff59f6660e8b}</Project>
+      <Name>FootballSystemPDFReporter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.105.1\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.105.1\build\net451\System.Data.SQLite.Core.targets')" />

@@ -13,6 +13,7 @@
 
     using Data;
     using Data.Migrations;
+    using PDFReporter;
 
     using Excel;
 
@@ -319,6 +320,7 @@
             Console.WriteLine("6. Edit player salary by name");
             Console.WriteLine("7. Export players to xml");
             Console.WriteLine("8. Import data from xml");
+            Console.WriteLine("9. Generate players report to a pdf file");
             Console.WriteLine();
 
             while (true)
@@ -353,6 +355,9 @@
                         break;
                     case 8:
                         ImportFromXml();
+                        break;
+                    case 9:
+                        PDFReporter.GenerateReport();
                         break;
                     default:
                         Console.WriteLine("Wrong command number!!!");
