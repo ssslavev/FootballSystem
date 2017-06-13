@@ -23,6 +23,10 @@
 
         public IDbSet<City> Cities { get; set; }
 
+        public IDbSet<Advertisements> Advertisements { get; set; }
+
+        public IDbSet<Coach> Coaches { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             var sqliteConnectionInitializer = new SqliteCreateDatabaseIfNotExists<FootballSQLiteDbContext>(modelBuilder);
