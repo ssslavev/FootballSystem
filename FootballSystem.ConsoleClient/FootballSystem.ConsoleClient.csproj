@@ -96,7 +96,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="cities.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -117,7 +119,7 @@
       <Project>{dcd9a13d-859d-4f47-915f-f1aa1647b9e9}</Project>
       <Name>FootballSystem.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FootballSystemPDFReporter\FootballSystem.PDFReporter.csproj">
+    <ProjectReference Include="..\FootballSystem.PDFReporter\FootballSystem.PDFReporter.csproj">
       <Project>{e29e3753-c114-4cd5-8eb5-ff59f6660e8b}</Project>
       <Name>FootballSystem.PDFReporter</Name>
     </ProjectReference>
