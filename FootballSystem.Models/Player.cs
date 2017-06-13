@@ -1,5 +1,6 @@
 ﻿namespace FootballSystem.Models
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class Player
@@ -27,5 +28,7 @@
         public int? CountryId { get; set; }
 
         public virtual Country Country { get; set; }
+
+        public ICollection<Advertisements> Advertisements { get; set; }
     }
 }

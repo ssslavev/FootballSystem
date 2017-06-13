@@ -25,6 +25,8 @@
 
         public IDbSet<City> Cities { get; set; }
 
+        public IDbSet<Advertisements> Advertisements { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             OnCountryModelCreating(modelBuilder);
