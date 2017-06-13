@@ -12,6 +12,7 @@
             : base("FootballDatabase")
         {
             Database.SetInitializer<FootballDbContext>(new CreateDatabaseIfNotExists<FootballDbContext>());
+            Configuration.ProxyCreationEnabled = false;
         }
 
         public IDbSet<Player> Players { get; set; }
@@ -23,6 +24,8 @@
         public IDbSet<Championship> Championships { get; set; }
 
         public IDbSet<City> Cities { get; set; }
+
+        public IDbSet<Advertisements> Advertisements { get; set; }
 
         public IDbSet<Coach> Coaches { get; set; }
 

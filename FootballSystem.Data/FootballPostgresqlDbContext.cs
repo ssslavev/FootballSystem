@@ -9,6 +9,7 @@
         public FootballPostgresqlDbContext()
             : base("PostgresFootball")
         {
+            Configuration.ProxyCreationEnabled = false;
         }
 
         public IDbSet<Player> Players { get; set; }

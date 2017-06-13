@@ -29,6 +29,8 @@
 
         public virtual Country Country { get; set; }
 
+        public ICollection<Advertisements> Advertisements { get; set; }
+
         public virtual ICollection<Coach> Coaches { get; set; } = new HashSet<Coach>();
     }
 }
