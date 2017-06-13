@@ -26,6 +26,10 @@
     {
         private static readonly FootballDbContext DbContext = new FootballDbContext();
 
+        private static readonly FootballPostgresqlDbContext PostgreDbContext = new FootballPostgresqlDbContext();
+
+        private static readonly FootballSQLiteDbContext SQLiteDbContext = new FootballSQLiteDbContext();
+
         private static void ImportCountriesFromJsontoSqlServer()
         {
             var fileBrowser = new OpenFileDialog { Filter = "JSON Document|*.json" };
@@ -317,6 +321,36 @@
             }
         }
 
+        private static void ImportFromSQLServerToPostgreSQL()
+        {
+            var countries = DbContext.Countries.ToList();
+
+
+            foreach (var country in countries)
+            {
+
+
+                PostgreDbContext.Countries.Add(country);
+
+                PostgreDbContext.SaveChanges();
+            }
+        }
+
+        private static void ImportFromSQLServerSQLite()
+        {
+            var countries = DbContext.Countries.ToList();
+
+
+            foreach (var country in countries)
+            {
+
+
+                SQLiteDbContext.Countries.Add(country);
+
+                SQLiteDbContext.SaveChanges();
+            }
+        }
+
         [STAThread]
         private static void Main()
         {
@@ -331,6 +365,8 @@
             Console.WriteLine("7. Export players to XML");
             Console.WriteLine("8. Import data from XML");
             Console.WriteLine("9. Generate players report to a PDF file");
+            Console.WriteLine("10. Import countries from SQL Server to PostgreSQL");
+            Console.WriteLine("11. Import countries from SQL Server to SQLite");
             Console.WriteLine();
 
             while (true)
@@ -368,6 +404,12 @@
                         break;
                     case 9:
                         PDFReporter.GenerateReport();
+                        break;
+                        case 10:
+                        ImportFromSQLServerToPostgreSQL();
+                        break;
+                    case 11:
+                        ImportFromSQLServerSQLite();
                         break;
                     default:
                         Console.WriteLine("Wrong command number!!!");

@@ -12,6 +12,7 @@
             : base("FootballDatabase")
         {
             Database.SetInitializer<FootballDbContext>(new CreateDatabaseIfNotExists<FootballDbContext>());
+            Configuration.ProxyCreationEnabled = false;
         }
 
         public IDbSet<Player> Players { get; set; }
