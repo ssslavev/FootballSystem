@@ -24,6 +24,8 @@
 
         public IDbSet<City> Cities { get; set; }
 
+        public IDbSet<Coach> Coaches { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             ModelCreating.AllModels(modelBuilder);

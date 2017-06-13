@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class Player
+    public class Coach
     {
         public int Id { get; set; }
 
@@ -21,14 +21,6 @@
 
         public int Age { get; set; }
 
-        public int? TeamId { get; set; }
-
-        public virtual Team Team { get; set; }
-
-        public int? CountryId { get; set; }
-
-        public virtual Country Country { get; set; }
-
-        public virtual ICollection<Coach> Coaches { get; set; } = new HashSet<Coach>();
+        public virtual ICollection<Player> Players { get; set; } = new HashSet<Player>();
     }
 }

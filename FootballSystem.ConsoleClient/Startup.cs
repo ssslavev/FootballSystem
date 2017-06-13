@@ -342,6 +342,7 @@
             Console.WriteLine("7. Export players to XML");
             Console.WriteLine("8. Import data from XML");
             Console.WriteLine("9. Generate players report to a PDF file");
+            Console.WriteLine("12. Add a new coach");
             Console.WriteLine();
 
             while (true)
@@ -380,11 +381,71 @@
                     case 9:
                         PDFReporter.GenerateReport();
                         break;
+                    case 12:
+                        AddCoach();
+                        break;
                     default:
                         Console.WriteLine("Wrong command number!!!");
                         break;
                 }
             }
+        }
+
+        private static void AddCoach()
+        {
+            var message = "updated";
+
+            Console.Write("First name: ");
+            var firstName = Console.ReadLine();
+            Console.Write("Last name: ");
+            var lastName = Console.ReadLine();
+
+            var coach = DbContext.Coaches.FirstOrDefault(c => c.FirstName == firstName && c.LastName == lastName);
+
+            if (coach == null)
+            {
+                Console.Write("Age: ");
+                var age = int.Parse(Console.ReadLine());
+                Console.Write("Salary: ");
+                var salary = int.Parse(Console.ReadLine());
+
+                coach = new Coach
+                            {
+                                FirstName = firstName,
+                                LastName = lastName,
+                                Age = age,
+                                Salary = salary
+                            };
+
+                message = "added";
+                DbContext.Coaches.Add(coach);
+            }
+
+            Console.Write("Player first name: ");
+            var playerFirstName = Console.ReadLine();
+            Console.Write("Player last name: ");
+            var playerLastName = Console.ReadLine();
+
+            var player = DbContext.Players.FirstOrDefault(
+                p => p.FirstName == playerFirstName && p.LastName == playerLastName);
+
+            if (player == null)
+            {
+                Console.WriteLine("There is no such player registered");
+                Console.WriteLine(new string('*', 50));
+                if (message != "updated")
+                {
+                    DbContext.Coaches.Remove(coach);
+                }
+
+                return;
+            }
+
+            coach.Players.Add(player);
+
+            DbContext.SaveChanges();
+            Console.WriteLine($"Coach {firstName} {lastName} was {message}!");
+            Console.WriteLine(new string('*', 50));
         }
     }
 }

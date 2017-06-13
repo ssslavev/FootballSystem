@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Championship.cs" />
     <Compile Include="City.cs" />
+    <Compile Include="Coach.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
