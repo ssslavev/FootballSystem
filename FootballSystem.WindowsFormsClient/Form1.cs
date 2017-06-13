@@ -158,14 +158,14 @@
             this.FillCities();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void SearchPlayerClick(object sender, EventArgs e)
         {
             Form2 form2 = new Form2();
             form2.Show();
             this.Hide();
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void DeletePlayerClick(object sender, EventArgs e)
         {
             Form3 form3 = new Form3();
             form3.Show();

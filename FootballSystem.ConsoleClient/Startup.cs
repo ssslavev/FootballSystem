@@ -13,24 +13,22 @@
 
     using Data;
     using Data.Migrations;
-    using PDFReporter;
 
     using Excel;
 
     using Models;
 
     using Newtonsoft.Json;
-    
+
+    using PDFReporter;
+
     public class Startup
     {
         private static readonly FootballDbContext DbContext = new FootballDbContext();
 
         private static void ImportCountriesFromJsontoSqlServer()
         {
-            var fileBrowser = new OpenFileDialog
-            {
-                Filter = "JSON Document|*.json"
-            };
+            var fileBrowser = new OpenFileDialog { Filter = "JSON Document|*.json" };
 
             if (fileBrowser.ShowDialog() != DialogResult.OK)
             {
@@ -45,6 +43,11 @@
 
             foreach (var country in countriesToAdd)
             {
+                if (DbContext.Countries.FirstOrDefault(c => c.Name == country.Name) != null)
+                {
+                    continue;
+                }
+
                 var countryToAdd = new Country
                 {
                     Name = country.Name
@@ -62,7 +65,14 @@
 
         private static void ImportCitiesFromExcellToSqlServer()
         {
-            FileStream stream = File.Open(Directory.GetCurrentDirectory() + "/cities.xlsx", FileMode.Open, FileAccess.Read);
+            var fileBrowser = new OpenFileDialog { Filter = "Microsoft Excel Document|*.xlsx" };
+
+            if (fileBrowser.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            FileStream stream = File.Open(fileBrowser.FileName, FileMode.Open, FileAccess.Read);
 
             IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
 
@@ -159,7 +169,7 @@
             }
             else
             {
-                Console.WriteLine($"No player with that name!");
+                Console.WriteLine("No player with that name!");
                 Console.WriteLine(new string('*', 50));
             }
         }
@@ -312,15 +322,15 @@
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<FootballDbContext, Configuration>());
             
-            Console.WriteLine("1. Import countries from json file to sql server");
-            Console.WriteLine("2. Import cities from excell to sql server");
+            Console.WriteLine("1. Import countries from JSON file to SQL server");
+            Console.WriteLine("2. Import cities from Excel to SQL server");
             Console.WriteLine("3. Add new player");
             Console.WriteLine("4. Remove player by player first name");
             Console.WriteLine("5. Find player by name");
             Console.WriteLine("6. Edit player salary by name");
-            Console.WriteLine("7. Export players to xml");
-            Console.WriteLine("8. Import data from xml");
-            Console.WriteLine("9. Generate players report to a pdf file");
+            Console.WriteLine("7. Export players to XML");
+            Console.WriteLine("8. Import data from XML");
+            Console.WriteLine("9. Generate players report to a PDF file");
             Console.WriteLine();
 
             while (true)

@@ -1,6 +1,8 @@
 ﻿namespace FootballSystem.Data
 {
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure.Annotations;
 
     using Models;
 
@@ -21,5 +23,21 @@
         public IDbSet<Championship> Championships { get; set; }
 
         public IDbSet<City> Cities { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            OnCountryModelCreating(modelBuilder);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+        private static void OnCountryModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Country>()
+                .Property(country => country.Name)
+                .HasColumnAnnotation(
+                    "Index",
+                    new IndexAnnotation(new IndexAttribute("IX_Name") { IsUnique = true }));
+        }
     }
 }
