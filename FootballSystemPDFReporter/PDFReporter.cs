@@ -1,9 +1,10 @@
 ﻿namespace FootballSystem.PDFReporter
 {
-    using Data;
-    using System.Data;
-    using System.Linq;
     using System.IO;
+    using System.Linq;
+
+    using Data;
+
     using iTextSharp.text;
     using iTextSharp.text.pdf;
 
@@ -22,10 +23,10 @@
 
             table.WidthPercentage = 80;
 
-            //First topic cell
+            // First topic cell
             table.AddCell(new PdfPCell(new Phrase("Football Players", new Font(Font.FontFamily.COURIER, 15, 2, BaseColor.WHITE))) { HorizontalAlignment = Element.ALIGN_CENTER, PaddingBottom = 10, BackgroundColor = BaseColor.RED, Colspan = 4 });
 
-            //Header cells
+            // Header cells
             table.AddCell(new PdfPCell(new Phrase("Player Name", new Font(Font.FontFamily.COURIER, 8, 1, BaseColor.BLACK))) { HorizontalAlignment = Element.ALIGN_CENTER, Padding = 5, BackgroundColor = new BaseColor(System.Drawing.Color.Silver) });
             table.AddCell(new PdfPCell(new Phrase("Player Age", new Font(Font.FontFamily.COURIER, 8, 1, BaseColor.BLACK))) { HorizontalAlignment = Element.ALIGN_CENTER, Padding = 5, BackgroundColor = new BaseColor(System.Drawing.Color.Silver) });
             table.AddCell(new PdfPCell(new Phrase("Team", new Font(Font.FontFamily.COURIER, 8, 1, BaseColor.BLACK))) { HorizontalAlignment = Element.ALIGN_CENTER, Padding = 5, BackgroundColor = new BaseColor(System.Drawing.Color.Silver) });

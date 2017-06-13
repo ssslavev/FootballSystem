@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballSystem.ConsoleClien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballSystem.WindowsFormsClient", "FootballSystem.WindowsFormsClient\FootballSystem.WindowsFormsClient.csproj", "{B7EBF220-1502-406A-90FD-86A217FD8EB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballSystemPDFReporter", "FootballSystemPDFReporter\FootballSystemPDFReporter.csproj", "{E29E3753-C114-4CD5-8EB5-FF59F6660E8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballSystem.PDFReporter", "FootballSystemPDFReporter\FootballSystem.PDFReporter.csproj", "{E29E3753-C114-4CD5-8EB5-FF59F6660E8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

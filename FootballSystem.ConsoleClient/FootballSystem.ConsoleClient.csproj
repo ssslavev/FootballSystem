@@ -117,9 +117,9 @@
       <Project>{dcd9a13d-859d-4f47-915f-f1aa1647b9e9}</Project>
       <Name>FootballSystem.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FootballSystemPDFReporter\FootballSystemPDFReporter.csproj">
+    <ProjectReference Include="..\FootballSystemPDFReporter\FootballSystem.PDFReporter.csproj">
       <Project>{e29e3753-c114-4cd5-8eb5-ff59f6660e8b}</Project>
-      <Name>FootballSystemPDFReporter</Name>
+      <Name>FootballSystem.PDFReporter</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
