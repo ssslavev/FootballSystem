@@ -18,9 +18,10 @@
         [MinLength(2)]
         [MaxLength(20)]
         public string Name { get; set; }
-
+        
         public int? CountryId { get; set; }
-
+        
+        [Required]
         public virtual Country Country { get; set; }
 
         public virtual ICollection<Team> Teams
