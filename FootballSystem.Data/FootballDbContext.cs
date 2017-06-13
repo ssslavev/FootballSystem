@@ -26,18 +26,12 @@
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            OnCountryModelCreating(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
 
         private static void OnCountryModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Country>()
-                .Property(country => country.Name)
-                .HasColumnAnnotation(
-                    "Index",
-                    new IndexAnnotation(new IndexAttribute("IX_Name") { IsUnique = true }));
         }
     }
 }
