@@ -97,27 +97,39 @@
 
         private void ImportCountriesClick(object sender, EventArgs e)
         {
-            var countriesToAdd = Directory.GetFiles(Directory.GetCurrentDirectory())
-                    .Where(f => f.EndsWith("json"))
-                    .Select(f => File.ReadAllText(f))
-                    .SelectMany(str => JsonConvert.DeserializeObject<IEnumerable<ParseModel>>(str))
-                    .ToList();
 
-            var db = new FootballDbContext();
+            var fileBrowser = new OpenFileDialog { Filter = @"JSON Document|*.json" };
+
+            if (fileBrowser.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            var file = File.ReadAllText(fileBrowser.FileName);
+
+            var countriesToAdd = JsonConvert.DeserializeObject<IEnumerable<ParseModel>>(file).ToList();
+
             var counter = 0;
+
+            var dbContext = new FootballDbContext();
 
             foreach (var country in countriesToAdd)
             {
-                var countryToAdd = new Country
+                if (dbContext.Countries.FirstOrDefault(c => c.Name == country.Name) != null)
                 {
-                    Name = country.Name
-                };
+                    continue;
+                }
 
-                db.Countries.Add(countryToAdd);
+                var countryToAdd = new Country
+                                       {
+                                           Name = country.Name
+                                       };
+
+                dbContext.Countries.Add(countryToAdd);
                 counter++;
             }
 
-            db.SaveChanges();
+            dbContext.SaveChanges();
 
             MessageBox.Show($@"{counter} countries was added!");
             this.FillCountries();
@@ -125,10 +137,16 @@
 
         private void ImportCitiesClick(object sender, EventArgs e)
         {
-            var db = new FootballDbContext();
+            var fileBrowser = new OpenFileDialog { Filter = @"Microsoft Excel Document|*.xlsx" };
 
-            // import cities from excell file
-            FileStream stream = File.Open(Directory.GetCurrentDirectory() + "/cities.xlsx", FileMode.Open, FileAccess.Read);
+            if (fileBrowser.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            FileStream stream = File.Open(fileBrowser.FileName, FileMode.Open, FileAccess.Read);
+
+            var db = new FootballDbContext();
 
             IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
 
