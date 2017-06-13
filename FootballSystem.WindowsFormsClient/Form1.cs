@@ -65,7 +65,12 @@
 
         private void AddPlayerClick(object sender, EventArgs e)
         {
-            var db = new FootballDbContext();
+            var dbContext = new FootballDbContext();
+
+            var country = dbContext.Countries.FirstOrDefault(c => c.Name == this.comboBox1.Text)
+                          ?? new Country { Name = this.comboBox1.Text };
+            var teamCountry = dbContext.Countries.FirstOrDefault(c => c.Name == this.comboBox2.Text)
+                          ?? new Country { Name = this.comboBox2.Text };
 
             var player = new Player
             {
@@ -73,20 +78,20 @@
                 LastName = this.textBox2.Text,
                 Age = int.Parse(this.textBox3.Text),
                 Salary = int.Parse(this.textBox4.Text),
-                Country = new Country { Name = this.comboBox1.Text },
+                Country = country,
                 Team = new Team
                 {
                     Name = this.textBox5.Text,
                     Manager = this.textBox7.Text,
                     Stadium = this.textBox6.Text,
-                    Country = new Country { Name = this.comboBox2.Text },
+                    Country = teamCountry,
                     Championship = new Championship { Name = this.textBox8.Text },
                     City = new City { Name = this.comboBox3.Text }
                 }
             };
 
-            db.Players.Add(player);
-            db.SaveChanges();
+            dbContext.Players.Add(player);
+            dbContext.SaveChanges();
             MessageBox.Show($@"Player {player.FirstName} {player.LastName} was created!");
         }
 

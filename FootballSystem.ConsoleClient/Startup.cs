@@ -131,22 +131,27 @@
             Console.Write("Team City: ");
             var teamCity = Console.ReadLine();
 
+            var country = DbContext.Countries.FirstOrDefault(c => c.Name == playerCountry)
+                          ?? new Country { Name = playerCountry };
+            var teamCountryInstance = DbContext.Countries.FirstOrDefault(c => c.Name == teamCountry)
+                                      ?? new Country { Name = teamCountry };
+
             var player = new Player
             {
                 FirstName = firstName,
                 LastName = lastName,
                 Age = age,
                 Salary = salary,
-                Country = new Country { Name = playerCountry },
+                Country = country,
                 Team = new Team
                 {
                     Name = teamName,
                     Manager = teamManager,
                     Stadium = teamStadium,
-                    Country = new Country { Name = teamCountry },
+                    Country = teamCountryInstance,
                     Championship = new Championship { Name = teamChampionship },
                     City = new City { Name = teamCity }
-                },
+                }
             };
 
             DbContext.Players.Add(player);
@@ -294,19 +299,25 @@
                 string championship = pl.Element("team").Element("championship").Value;
                 string teamCountry = pl.Element("team").Element("country").Value;
 
+                var countryInstance = DbContext.Countries.FirstOrDefault(c => c.Name == country)
+                              ?? new Country { Name = country };
+
+                var teamCountryInstance = DbContext.Countries.FirstOrDefault(c => c.Name == teamCountry)
+                              ?? new Country { Name = teamCountry };
+
                 var player = new Player
                 {
                     FirstName = fullName[0],
                     LastName = fullName[1],
                     Age = age,
                     Salary = salary,
-                    Country = new Country { Name = country },
+                    Country = countryInstance,
                     Team = new Team
                     {
                         Name = teamName,
                         Manager = manager,
                         Stadium = stadium,
-                        Country = new Country { Name = teamCountry },
+                        Country = teamCountryInstance,
                         Championship = new Championship { Name = championship },
                         City = new City { Name = city }
                     }
